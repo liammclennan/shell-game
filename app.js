@@ -48,12 +48,14 @@ Pea = (function() {
   return Pea;
 })();
 templates = {
-  cup_markup: '<img src="images/cup.png" alt="cup" class="cup" />'
+  cup_markup: '<img src="images/cup.png" alt="cup" class="cup" />',
+  pea_markup: '<img src="images/ball.png" alt="pea" class="pea" />'
 };
 $(function() {
-  var board, one, three, two;
+  var board, one, pea, three, two;
   board = new Board();
   one = new Cup(board, 'left');
   two = new Cup(board, 'centre');
-  return three = new Cup(board, 'right');
+  three = new Cup(board, 'right');
+  return pea = new Pea(board, 'right');
 });

@@ -21,7 +21,8 @@ class Pea extends ShuffleObject
       templates.pea_markup
     
 templates =
-  cup_markup: '<img src="images/cup.png" alt="cup" class="cup" />'
+  cup_markup: '<img src="images/cup.png" alt="cup" class="cup" />',
+  pea_markup: '<img src="images/ball.png" alt="pea" class="pea" />'
 
 
 
@@ -30,3 +31,4 @@ $ ->
   one = new Cup(board, 'left')
   two = new Cup(board, 'centre')
   three = new Cup(board, 'right')
+  pea = new Pea(board, 'right')
