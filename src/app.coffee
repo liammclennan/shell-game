@@ -37,6 +37,17 @@ class Cup extends ShuffleObject
   _markup: ->
     templates.cup_markup
   
+  
+class Pea extends ShuffleObject
+  forward: ->
+    @el.css 'z-index', 2
+
+  backward: ->
+    @el.css 'z-index', 0
+
+  _markup: ->
+    templates.pea_markup
+
       
 class Board
   constructor: ->
@@ -49,17 +60,6 @@ class Board
   high: -> @vertical_baseline() + 50
   
   low: -> @vertical_baseline() - 50
-  
-  
-class Pea extends ShuffleObject
-  forward: ->
-    @el.css 'z-index', 2
-
-  backward: ->
-    @el.css 'z-index', 0
-
-  _markup: ->
-    templates.pea_markup
   
     
 class Operator
