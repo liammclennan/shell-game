@@ -17,6 +17,7 @@ class ShuffleObject
   _render: ->
     @el = $(@_markup()).css('left', @container[@position]).appendTo($('body'));
 
+
 class Cup extends ShuffleObject
   constructor: (@container, @position, @operator) ->
     super @container, @position
@@ -35,6 +36,7 @@ class Cup extends ShuffleObject
   
   _markup: ->
     templates.cup_markup
+  
       
 class Board
   constructor: ->
@@ -49,7 +51,6 @@ class Board
   low: -> @vertical_baseline() - 50
   
   
-
 class Pea extends ShuffleObject
   forward: ->
     @el.css 'z-index', 2
@@ -59,21 +60,17 @@ class Pea extends ShuffleObject
 
   _markup: ->
     templates.pea_markup
+  
     
-templates =
-  cup_markup: '<img src="images/cup.png" alt="cup" class="cup" />',
-  pea_markup: '<img src="images/ball.png" alt="pea" class="pea" />'
-  tick_markup: '<img src="images/tick.jpg" alt="success" class="result" width="100px" height=="100px"/>'
-  cross_markup: '<img src="images/cross.jpg" alt="failure" class="result" width="100px" height=="100px" />'
-
 class Operator
   constructor: (@speed)->
     @board = new Board()
     @left = new Cup(@board, 'left', @)
     @centre = new Cup(@board, 'centre', @)
     @right = new Cup(@board, 'right', @)
-    @pea = new Pea(@board, 'right')
-    @right.hide @pea
+    pea_position = @_random_position()
+    @pea = new Pea(@board, pea_position)
+    @[pea_position].hide @pea
     setTimeout(=>
       @pea.el.css('z-index',0)
     , 500)
@@ -104,13 +101,21 @@ class Operator
     right_hand.move(from, @board.low())
 
   _select_cup: ->
+    @[@_random_position()]
+    
+  _random_position: ->
     val = Math.random()
-    if val < 1/3 then return @left
-    if 1/3 <= val < 2/3 then return @centre
-    return @right
+    if val < 1/3 then return 'left'
+    if 1/3 <= val < 2/3 then return 'centre'
+    return 'right'
 
 $ ->
   o = new Operator(500)
   $('#shuffle').click(-> o.shuffle())
   
   
+templates =
+  cup_markup: '<img src="images/cup.png" alt="cup" class="cup" />',
+  pea_markup: '<img src="images/ball.png" alt="pea" class="pea" />'
+  tick_markup: '<img src="images/tick.jpg" alt="success" class="result" width="100px" height=="100px"/>'
+  cross_markup: '<img src="images/cross.jpg" alt="failure" class="result" width="100px" height=="100px" />'

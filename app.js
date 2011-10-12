@@ -91,21 +91,17 @@ Pea = (function() {
   };
   return Pea;
 })();
-templates = {
-  cup_markup: '<img src="images/cup.png" alt="cup" class="cup" />',
-  pea_markup: '<img src="images/ball.png" alt="pea" class="pea" />',
-  tick_markup: '<img src="images/tick.jpg" alt="success" class="result" width="100px" height=="100px"/>',
-  cross_markup: '<img src="images/cross.jpg" alt="failure" class="result" width="100px" height=="100px" />'
-};
 Operator = (function() {
   function Operator(speed) {
+    var pea_position;
     this.speed = speed;
     this.board = new Board();
     this.left = new Cup(this.board, 'left', this);
     this.centre = new Cup(this.board, 'centre', this);
     this.right = new Cup(this.board, 'right', this);
-    this.pea = new Pea(this.board, 'right');
-    this.right.hide(this.pea);
+    pea_position = this._random_position();
+    this.pea = new Pea(this.board, pea_position);
+    this[pea_position].hide(this.pea);
     setTimeout(__bind(function() {
       return this.pea.el.css('z-index', 0);
     }, this), 500);
@@ -143,15 +139,18 @@ Operator = (function() {
     return right_hand.move(from, this.board.low());
   };
   Operator.prototype._select_cup = function() {
+    return this[this._random_position()];
+  };
+  Operator.prototype._random_position = function() {
     var val;
     val = Math.random();
     if (val < 1 / 3) {
-      return this.left;
+      return 'left';
     }
     if ((1 / 3 <= val && val < 2 / 3)) {
-      return this.centre;
+      return 'centre';
     }
-    return this.right;
+    return 'right';
   };
   return Operator;
 })();
@@ -162,3 +161,9 @@ $(function() {
     return o.shuffle();
   });
 });
+templates = {
+  cup_markup: '<img src="images/cup.png" alt="cup" class="cup" />',
+  pea_markup: '<img src="images/ball.png" alt="pea" class="pea" />',
+  tick_markup: '<img src="images/tick.jpg" alt="success" class="result" width="100px" height=="100px"/>',
+  cross_markup: '<img src="images/cross.jpg" alt="failure" class="result" width="100px" height=="100px" />'
+};
