@@ -21,7 +21,7 @@ class Cup extends ShuffleObject
   constructor: (@container, @position, @operator) ->
     super @container, @position
     @el.click(=>
-      @operator.reveal()
+      @operator.reveal(@pea?)
     )
   
   hide: (@pea) ->
@@ -47,6 +47,8 @@ class Board
   high: -> @vertical_baseline() + 50
   
   low: -> @vertical_baseline() - 50
+  
+  
 
 class Pea extends ShuffleObject
   forward: ->
@@ -61,6 +63,8 @@ class Pea extends ShuffleObject
 templates =
   cup_markup: '<img src="images/cup.png" alt="cup" class="cup" />',
   pea_markup: '<img src="images/ball.png" alt="pea" class="pea" />'
+  tick_markup: '<img src="images/tick.jpg" alt="success" class="result" width="100px" height=="100px"/>'
+  cross_markup: '<img src="images/cross.jpg" alt="failure" class="result" width="100px" height=="100px" />'
 
 class Operator
   constructor: (@speed)->
@@ -81,13 +85,16 @@ class Operator
         @_swap()
       , (@speed * count) + 10)
   
-  reveal: ->
+  reveal: (success) ->
     @pea.forward()
-    # display result    
+    @_display_result(success)    
   
   _reset: ->
     @pea.backward()
-    # hide result
+    $('.result').remove()
+    
+  _display_result: (success) ->
+    $(if success then templates.tick_markup else templates.cross_markup).appendTo('body')
     
   _swap: ->
     left_hand = right_hand = @_select_cup()

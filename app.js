@@ -38,7 +38,7 @@ Cup = (function() {
     this.operator = operator;
     Cup.__super__.constructor.call(this, this.container, this.position);
     this.el.click(__bind(function() {
-      return this.operator.reveal();
+      return this.operator.reveal(this.pea != null);
     }, this));
   }
   Cup.prototype.hide = function(pea) {
@@ -93,7 +93,9 @@ Pea = (function() {
 })();
 templates = {
   cup_markup: '<img src="images/cup.png" alt="cup" class="cup" />',
-  pea_markup: '<img src="images/ball.png" alt="pea" class="pea" />'
+  pea_markup: '<img src="images/ball.png" alt="pea" class="pea" />',
+  tick_markup: '<img src="images/tick.jpg" alt="success" class="result" width="100px" height=="100px"/>',
+  cross_markup: '<img src="images/cross.jpg" alt="failure" class="result" width="100px" height=="100px" />'
 };
 Operator = (function() {
   function Operator(speed) {
@@ -119,11 +121,16 @@ Operator = (function() {
     }
     return _results;
   };
-  Operator.prototype.reveal = function() {
-    return this.pea.forward();
+  Operator.prototype.reveal = function(success) {
+    this.pea.forward();
+    return this._display_result(success);
   };
   Operator.prototype._reset = function() {
-    return this.pea.backward();
+    this.pea.backward();
+    return $('.result').remove();
+  };
+  Operator.prototype._display_result = function(success) {
+    return $(success ? templates.tick_markup : templates.cross_markup).appendTo('body');
   };
   Operator.prototype._swap = function() {
     var from, left_hand, right_hand, to, _ref;
